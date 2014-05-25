@@ -1,0 +1,52 @@
+/* default (inactive field) */
+.sf_inactive{
+	/*border:2px #3d91a5 solid;*/
+	/*background:#3d91a5;*/
+	/*color:#fe7916;*/
+	color: #CCC;
+}
+/* on focus (when field is clicked on)  */
+.sf_active{
+	border:2px #8BB544 solid;
+	background:#fff;
+	color:#333;
+}
+/* with text (when field is inactive but contains user's input)  */
+.sf_text{
+	border:2px #3c90a5 solid;
+	background:#fff;
+	color:#888;
+}
+
+/* suggestions box */
+/* js code generates unordered list */
+.sf_suggestion{
+	position:relative;
+}
+.sf_suggestion ul{
+	position:absolute;
+	margin:0;
+	padding:0;
+	background:#e5e5e5;
+	top:0;
+	left:0;
+	/*height: 100px;
+	overflow-y: auto;*/
+}
+.sf_suggestion li{
+	margin:0;
+	padding:0;
+	list-style:none;
+	border-bottom: solid 1px #CCC;
+}
+.sf_suggestion li a{
+	display:block;
+	/*text-indent:5px;*/
+	color:#000;
+	text-decoration: none;
+	padding: 5px;
+	padding-left: 10px;
+}
+.sf_suggestion li.selected a{
+	background:#bbdff7;
+}

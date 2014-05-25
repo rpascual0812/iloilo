@@ -1,0 +1,196 @@
+<link href="./css/autocomplete.css" rel="stylesheet" type="text/css" />
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Form
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Form</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- top row -->
+    <div class="row">
+        <div class="col-xs-12 connectedSortable">
+            
+        </div><!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+    <!-- Main row -->
+    <div class="row">
+    	<!-- Main content -->
+        <section class="content">
+	    	<!-- Form Element sizes -->
+	        <div class="box" style="width: 50%;">
+		        <div class="box-body">
+		        	<div>
+		            	<input class="form-control input-lg" id="form-customername" type="text" placeholder="Search Customer...">
+		            </div>
+		            <!-- phone mask -->
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label>Mobile Phone:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-mobile-phone"></i>
+                            </div>
+                            <input type="text" class="form-control input-lg" id="form-mobile" data-inputmask='"mask": "9999-999-9999"' data-mask/>
+                        </div><!-- /.input group -->
+                        <label style="margin-top: 10px;">Landline:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <input type="text" class="form-control input-lg" id="form-landline" data-inputmask='"mask": "999-9999"' data-mask/>
+                        </div><!-- /.input group -->
+                    </div><!-- /.form group -->
+		            <div>
+		            	<input class="form-control input-lg" id="form-location" type="text" placeholder="Location">
+		            </div>
+                    <!-- Date range -->
+                    <div class="form-group" style="margin-top: 10px;">
+                        <label>Date of Appointment:</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                            <input type="text" class="form-control pull-right input-lg" id="reservationtime" readonly="readonly"/>
+                        </div><!-- /.input group -->
+                    </div><!-- /.form group -->
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea class="form-control" id="form-remarks" rows="3" placeholder="Enter remarks..."></textarea>
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button class="btn btn-danger btn-lg" onclick="clear_form()">CLEAR</button>
+                        <button class="btn btn-primary btn-lg" onclick="submit_form()">SUBMIT</button>
+                    </div>
+		        </div><!-- /.box-body -->
+		    </div>
+		</section>
+    </div><!-- /.row (main row) -->
+
+</section><!-- /.content -->
+<script src="js/autocomplete.js"></script>
+<script src="./js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+<script src="./js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+<script src="./js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+<!-- Page script -->
+<script type="text/javascript">
+    $(function() {
+        $.autocompleter(function(){
+        });
+
+        //Datemask dd/mm/yyyy
+        $("#datemask").inputmask("dd/mm/yyyy", {"placeholder": "dd/mm/yyyy"});
+        //Datemask2 mm/dd/yyyy
+        $("#datemask2").inputmask("mm/dd/yyyy", {"placeholder": "mm/dd/yyyy"});
+        //Money Euro
+        $("[data-mask]").inputmask();
+
+        //Date range picker
+        $('#reservation').daterangepicker();
+        //Date range picker with time picker
+        $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 10, format: 'MM/DD/YYYY h:mm A'});
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+                {
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                        'Last 7 Days': [moment().subtract('days', 6), moment()],
+                        'Last 30 Days': [moment().subtract('days', 29), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                    },
+                    startDate: moment().subtract('days', 29),
+                    endDate: moment()
+                },
+        function(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        });
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+            checkboxClass: 'icheckbox_minimal',
+            radioClass: 'iradio_minimal'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+            checkboxClass: 'icheckbox_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+            checkboxClass: 'icheckbox_flat-red',
+            radioClass: 'iradio_flat-red'
+        });
+    });
+
+    function clear_form(){
+        $("[class^='form-control']").each(function(i){
+            $(this).val("");
+        });
+    }
+
+    function validation(){
+        var error=0;
+        var phone=0;
+
+        if($('#form-mobile').val().replace(/\s/g,'') == "" && $('#form-landline').val().replace(/\s/g,'') == ""){
+            error++;
+        }
+
+        $("[class^='form-control']").each(function(i){
+            if($(this).attr('id') == 'form-customername' && $(this).val().replace(/\s/g,'') == ""){
+                error++;
+            }
+            else if($(this).attr('id') == 'form-customername' && $(this).val().replace(/\s/g,'') == ""){
+                error++;
+            }
+            // else if($(this).attr('id') == 'form-mobile' && $(this).val().replace(/\s/g,'') == ""){
+            //     console.log($(this).attr('id'));
+            //     error++;
+            //     phone++;
+            // }
+            // else if($(this).attr('id') == 'form-landline' && phone > 0 && $(this).val().replace(/\s/g,'') == ""){
+            //     console.log($(this).attr('id'));
+            //     error++;
+            // }
+            else if($(this).attr('id') == 'form-location' && $(this).val().replace(/\s/g,'') == ""){
+                error++;
+            }
+            else if($(this).attr('id') == 'reservationtime' && $(this).val().replace(/\s/g,'') == ""){
+                error++;
+            }
+        });
+
+        return error;
+    }
+
+    function submit_form(){
+        var error = validation();
+        
+        if(error == 0){
+            var fields=[];
+            $("[class^='form-control']").each(function(i){
+                fields.push($(this).val());
+            });
+
+            $.post('./functions/orders/submit.php', { fields : fields }, function(data){
+                if(data.status == true){
+                    alert('Appointment submitted');
+                    clear_form();
+                }
+                else {
+                    alert('Failed');
+                }
+            });
+        }
+    }
+</script>
