@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Insta Booth | Dashboard</title>
+        <title>Studio 28 Photobooth</title>
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <!-- bootstrap 3.0.2 -->
         <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -35,7 +35,7 @@
         <header class="header">
             <a href="index.html" class="logo">
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                Insta Booth
+                Studio 28
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
@@ -47,7 +47,7 @@
                     <span class="icon-bar"></span>
                 </a>
                 <div class="navbar-right">
-                    
+                    <img src="./img/exit.png" title="Sign out" style="width: 30px; margin-top: 10px; margin-right: 20px; cursor: pointer;" onclick="logout()">
                 </div>
             </nav>
         </header>
@@ -58,11 +58,11 @@
                 <section class="sidebar">
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
-                        <div class="pull-left image">
-                            <img src="img/avatar04.png" class="img-circle" alt="User Image" />
+                        <div class="pull-left image" id="div-avatar">
+                            <img src="img/avatars/firends_Morcha_03.png" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Hello, Admin</p>
+                            <p id="p-hello">Hello, Admin</p>
 
                             <!-- <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
                         </div>
@@ -226,6 +226,36 @@
         <script src="js/AdminLTE/app.js" type="text/javascript"></script>
 
         <script src="js/index.js" type="text/javascript"></script>
+
+        <script>
+            $(document).ready(function(){
+                $.post('./functions/users/check_cookies.php', function(data){
+                    if(data.username == null){
+                        window.location = "login.html";
+                    }
+
+                    getuserinfo();
+                });
+            });
+
+            function logout(){
+                $.post('./functions/users/destroy_cookies.php', function(data){
+                    window.location = "login.html";
+                });
+            }
+
+            function getuserinfo(){
+                $.post('./functions/users/getuserinfo.php', function(data){
+                    if(data.status != false){
+                        $.each(data.data, function(i){
+                            $('#p-hello').empty().append("Hello, "+this.firstname);
+                            $('#div-avatar').empty().append('<img src="img/avatars/'+this.avatar+'" class="img-circle" alt="User Image" />');
+                        });
+                        
+                    }
+                });
+            }
+        </script>
         
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
                 

@@ -83,10 +83,10 @@ autocompleter : function(callback) {
 					if(fieldvalue.length > 2){
 						$.post('./functions/orders/search_customer.php', { keyword : field.value }, function(data){
 
-							var suggestionText = "";
+							var suggestionText = [];
 							if(data.status == true){
 								$.each(data.data, function(i){
-									suggestionText = this.customername;
+									suggestionText.push(this.customername);
 								});
 							}
 							else{
@@ -95,7 +95,7 @@ autocompleter : function(callback) {
 							
 							var arr = getListItems(field.value, suggestionText);
 							if(field.value.length > 0){
-								createList(arr);
+								createList(arr[0]);
 							}
 							else {
 								clearList();
@@ -145,6 +145,7 @@ autocompleter : function(callback) {
 							};
 							li.appendChild(a);
 							list.setAttribute("tabindex", "-1");
+							list.setAttribute("style", "z-index:9999;");
 							list.appendChild(li);
 						};
 						list.style.display = "block";
