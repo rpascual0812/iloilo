@@ -230,8 +230,9 @@
         <script>
             $(document).ready(function(){
                 $.post('./functions/users/check_cookies.php', function(data){
-                    alert(data);
+                    alert(JSON.stringify(data.username));
                     if(data.username == null){
+                        return false;
                         window.location = "login.html";
                     }
 
@@ -249,6 +250,7 @@
                 $.post('./functions/users/getuserinfo.php', function(data){
                     if(data.status != false){
                         $.each(data.data, function(i){
+                            alert(JSON.stringify(this));
                             $('#p-hello').empty().append("Hello, "+this.firstname);
                             $('#div-avatar').empty().append('<img src="img/avatars/'+this.avatar+'" class="img-circle" alt="User Image" />');
                         });
