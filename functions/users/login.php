@@ -17,7 +17,7 @@ $create = new Users(
                     );
 
 $data = $create->login();
-
+print_r($data);
 if(count($data['data'])>0){
 	setcookie(
             'username',

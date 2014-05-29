@@ -76,6 +76,8 @@
                                                         rememberme : rememberme 
                                                     }, function(data){
 
+                    alert(JSON.stringify(data));
+                    return false;
                     $('#login-footer').empty();
                     if(data.status == false) {
                         $('#login-footer').append('Invalid Username or Password');
