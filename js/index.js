@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('.right-side').load('./pages/templates/reports.html', { date : Date() });
+	$('.right-side').load('./pages/templates/dashboard.html', { date : Date() });
 
 	$('#menu-dashboard').on('click',function(){
 		$('.right-side').load('./pages/templates/dashboard.html', { date : Date() });
