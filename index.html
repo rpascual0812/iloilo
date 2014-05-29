@@ -230,9 +230,7 @@
         <script>
             $(document).ready(function(){
                 $.post('./functions/users/check_cookies.php', function(data){
-                    alert(JSON.stringify(data.username));
                     if(data.username == null){
-                        return false;
                         window.location = "login.html";
                     }
 
