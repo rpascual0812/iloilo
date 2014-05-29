@@ -118,55 +118,108 @@ EOT;
                 from orders
                 where datefrom::date between '$from' and '$to'
                 and archived = false
+                order by datefrom asc,datecreated asc
                 ;
 EOT;
         return ClassParent::get($sql);
     }
 
-    
-    //////////////////////////////////////////////
-    public function updateCollegeInfo($pk, $body){
-        $pk     = pg_escape_string(trim(strip_tags($pk)));
-        $body   = pg_escape_string(trim($body));
-
-        $this->archived = ($this->archived == 'f') ? $this->archived = 'false' : $this->archived = 'true';
-        
+    public function get_one(){
         $sql = <<<EOT
-            begin;
-            update colleges set 
-            (code,name,archived)
-            =
-            ('$this->code','$this->name',$this->archived)
-            where pk = $pk;
-
-            update articles set
-            (title,body)
-            =
-            ('$this->name','$body')
-            where pk = $this->articles_pk;
-            commit;
+                with Q as 
+                (
+                    select
+                        orderspk,
+                        remark,
+                        createdby,
+                        datecreated
+                    from orders_remarks
+                    where orderspk = $this->pk
+                    order by datecreated desc
+                )
+                select
+                    pk,
+                    customername,
+                    mobilephone,
+                    landline,
+                    location as loc,
+                    to_char(datefrom,'MM/DD/YYYY HH:MI AM') as datefrom,
+                    to_char(dateto,'MM/DD/YYYY HH:MI AM') as dateto,
+                    orders.createdby,
+                    orders.datecreated,
+                    status as stat,
+                    array_to_string(array_agg(Q.remark||'~@~'||Q.datecreated::timestamp(0)),'||') as remark
+                from orders
+                left join Q on (orders.pk = Q.orderspk)
+                where pk = $this->pk
+                group by
+                    pk,
+                    customername,
+                    mobilephone,
+                    landline,
+                    loc,
+                    datefrom,
+                    dateto,
+                    orders.createdby,
+                    orders.datecreated,
+                    stat
+                ;
 EOT;
-        return ClassParent::update($sql);
+        return ClassParent::get($sql);
     }
 
-    public function insertCollegeInfo($body){
-        $body   = pg_escape_string(trim($body));
+    public function update($remark){
+        $remark = pg_escape_string(trim(strip_tags($remark)));
 
-        $sql = <<<EOT
-            begin;
-            insert into articles
-            (title,body)
-            values
-            ('$this->name',$body')
-            ;
-            insert into colleges
-            (code,name,articles_pk)
-            values
-            ('$this->code','$this->name',currval('articles_pk_seq'))
-            ;
-            commit;
+        $sql = "begin;";
+        $sql .= <<<EOT
+                update orders
+                set
+                (
+                    customername,
+                    mobilephone,
+                    landline,
+                    location,
+                    datefrom,
+                    dateto,
+                    createdby,
+                    status
+                )
+                =
+                (
+                    '$this->customername',
+                    '$this->mobilephone',
+                    '$this->landline',
+                    '$this->location',
+                    '$this->datefrom'::timestamptz,
+                    '$this->dateto'::timestamptz,
+                    '$this->createdby',
+                    '$this->status'
+                )
+                where pk = $this->pk
+                ;
 EOT;
-        return ClassParent::insert($sql);
+        if($remark){
+            $sql .= <<<EOT
+                insert into orders_remarks
+                (
+                    orderspk,
+                    remark,
+                    createdby
+                )
+                values
+                (
+                    $this->pk,
+                    '$remark',
+                    '$this->createdby'
+                )
+                ;
+EOT;
+        }
+        
+        $sql .= "commit;";
+
+        return ClassParent::update($sql);
     }
 }
 ?>
