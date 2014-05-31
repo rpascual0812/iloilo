@@ -4,6 +4,7 @@ require_once('../../classes/Orders.php');
 
 $date = explode(' - ',$_POST['fields'][5]);
 
+$_POST['fields'][9] = $_POST['fields'][8];
 $_POST['fields'][8] = $_POST['fields'][7];
 $_POST['fields'][7] = $_POST['fields'][6];
 
@@ -21,10 +22,11 @@ $create = new Orders(
 						NULL,
 						$_COOKIE['username'],
 						NULL,
-						$_POST['fields'][7]
+						$_POST['fields'][7],
+						$_POST['fields'][8]
                     );
 
-$return = $create->update($_POST['fields'][8]);
+$return = $create->update($_POST['fields'][9]);
 
 header("content-type: application/json");
 print(json_encode($return));

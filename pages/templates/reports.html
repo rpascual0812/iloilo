@@ -50,6 +50,7 @@
                                 <th>Location</th>
                                 <th>Date</th>
                                 <th>Status</th>
+                                <th>Amount</th>
                                 <th>Option</th>
                             </tr>
                         </thead>
@@ -131,6 +132,7 @@
 	                									<td style="vertical-align: middle; width: 150px;"><span style="color:#21530D;">'+this.datefrom+"</span><br /><span style='color:#C80000;'>"
 	                										 +this.dateto+'</span></td>\
 	                									<td style="vertical-align: middle; width: 80px;">'+this.stat+'</td>\
+                                                        <td style="vertical-align: middle; width: 90px; text-align: right; padding-right: 5px;">'+this.payment+'</td>\
 	                									<td style="vertical-align: middle; text-align: center; width: 50px;"><a href="#" onclick="edit_order('+this.pk+')">EDIT</a></td>\
 	                								</tr>\
 	                							');
@@ -158,6 +160,8 @@
                 $('#form-location').val(this.loc);
                 $('#form-mobile').val(this.mobilephone);
                 $('#reservationtime').val(this.datefrom+" - "+this.dateto);
+                $('#form-status').val(this.stat);
+                $('#form-payment').val(this.payment);
 
                 var from = this.datefrom.split(' ');
 

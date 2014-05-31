@@ -1,10 +1,10 @@
 <link href="./css/autocomplete.css" rel="stylesheet" type="text/css" />
 <div>
 	<div class="box-body" style="float:left; width: 70%">
-        <input class="form-control input-lg" id="form-orderspk" type="hidden" />
+        <input class="form-control" id="form-orderspk" type="hidden" />
         <label>Customer Name:</label>
     	<div>
-        	<input class="form-control input-lg" id="form-customername" type="text" />
+        	<input class="form-control" id="form-customername" type="text" />
         </div>
         <!-- phone mask -->
         <div class="form-group" style="margin-top: 10px;">
@@ -13,19 +13,19 @@
                 <div class="input-group-addon">
                     <i class="fa fa-mobile-phone"></i>
                 </div>
-                <input type="text" class="form-control input-lg" id="form-mobile" data-inputmask='"mask": "9999-999-9999"' data-mask/>
+                <input type="text" class="form-control" id="form-mobile" data-inputmask='"mask": "9999-999-9999"' data-mask/>
             </div><!-- /.input group -->
             <label style="margin-top: 10px;">Landline:</label>
             <div class="input-group">
                 <div class="input-group-addon">
                     <i class="fa fa-phone"></i>
                 </div>
-                <input type="text" class="form-control input-lg" id="form-landline" data-inputmask='"mask": "999-9999"' data-mask/>
+                <input type="text" class="form-control" id="form-landline" data-inputmask='"mask": "999-9999"' data-mask/>
             </div><!-- /.input group -->
         </div><!-- /.form group -->
         <div>
             <label>Location:</label>
-        	<input class="form-control input-lg" id="form-location" type="text" placeholder="Location">
+        	<input class="form-control" id="form-location" type="text" placeholder="Location">
         </div>
         <!-- Date range -->
         <div class="form-group" style="margin-top: 10px;">
@@ -34,14 +34,23 @@
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                <input type="text" class="form-control pull-right input-lg" id="reservationtime" readonly="readonly"/>
+                <input type="text" class="form-control pull-right" id="reservationtime" readonly="readonly"/>
             </div><!-- /.input group -->
         </div><!-- /.form group -->
         <div class="form-group">
             <select class="form-control" id="form-status">
                 <option>PENDING</option>
                 <option>COMPLETED</option>
+                <option>CANCELLED</option>
             </select>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <i class="fa fa-rouble"></i>
+                </div>
+                <input class="form-control" id="form-payment" type="text" placeholder="Payment">
+            </div>
         </div>
         <div class="form-group">
             <textarea class="form-control" id="form-remarks" rows="3" placeholder="Enter remarks..."></textarea>
@@ -109,6 +118,22 @@
         $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
             checkboxClass: 'icheckbox_flat-red',
             radioClass: 'iradio_flat-red'
+        });
+
+        $("#form-payment").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+                 // Allow: Ctrl+A
+                (e.keyCode == 65 && e.ctrlKey === true) || 
+                 // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                     // let it happen, don't do anything
+                     return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
         });
     });
 

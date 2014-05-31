@@ -19,7 +19,8 @@ $create = new Orders(
 						NULL,
 						$_COOKIE['username'],
 						NULL,
-						NULL
+						NULL,
+						0
                     );
 
 $return = $create->create($_POST['fields'][6]);

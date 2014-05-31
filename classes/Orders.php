@@ -12,6 +12,7 @@ class Orders extends ClassParent{
     var $createdby      = NULL;
     var $datecreated    = NULL;
     var $status         = NULL;
+    var $payment        = 0;
 
     public function __construct(
                                     $pk,
@@ -24,7 +25,8 @@ class Orders extends ClassParent{
                                     $archived,
                                     $createdby,
                                     $datecreated,
-                                    $status
+                                    $status,
+                                    $payment
                                 ){
         
         $arr = get_defined_vars();
@@ -116,7 +118,8 @@ EOT;
                     users.avatar,
                     orders.datecreated,
                     status as stat,
-                    orders.archived
+                    orders.archived,
+                    payment
                 from orders
                 left join users on (orders.createdby = users.username)
                 where datefrom::date between '$from' and '$to'
@@ -151,7 +154,8 @@ EOT;
                     orders.createdby,
                     orders.datecreated,
                     status as stat,
-                    array_to_string(array_agg(Q.remark||'~@~'||Q.datecreated::timestamp(0)),'||') as remark
+                    array_to_string(array_agg(Q.remark||'~@~'||Q.datecreated::timestamp(0)),'||') as remark,
+                    payment
                 from orders
                 left join Q on (orders.pk = Q.orderspk)
                 where pk = $this->pk
@@ -186,7 +190,8 @@ EOT;
                     datefrom,
                     dateto,
                     createdby,
-                    status
+                    status,
+                    payment
                 )
                 =
                 (
@@ -197,11 +202,13 @@ EOT;
                     '$this->datefrom'::timestamptz,
                     '$this->dateto'::timestamptz,
                     '$this->createdby',
-                    '$this->status'
+                    '$this->status',
+                    $this->payment
                 )
                 where pk = $this->pk
                 ;
 EOT;
+
         if($remark){
             $sql .= <<<EOT
                 insert into orders_remarks
