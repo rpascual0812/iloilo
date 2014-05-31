@@ -104,21 +104,24 @@ EOT;
     public function report($from,$to){
         $sql = <<<EOT
                 select
-                    pk,
+                    orders.pk,
                     customername,
                     mobilephone,
                     landline,
                     location as loc,
                     to_char(datefrom,'Mon DD, YYYY HH:MI AM') as datefrom,
                     to_char(dateto,'Mon DD, YYYY HH:MI AM') as dateto,
-                    createdby,
-                    datecreated,
+                    orders.createdby,
+                    users.firstname as author,
+                    users.avatar,
+                    orders.datecreated,
                     status as stat,
-                    archived
+                    orders.archived
                 from orders
+                left join users on (orders.createdby = users.username)
                 where datefrom::date between '$from' and '$to'
-                and archived = false
-                order by datefrom asc,datecreated asc
+                and orders.archived = false
+                order by datefrom asc,orders.datecreated asc
                 ;
 EOT;
         return ClassParent::get($sql);
