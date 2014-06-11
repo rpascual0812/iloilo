@@ -74,6 +74,7 @@ EOT;
             $sql .= <<<EOT
                 update users set
                 password = md5('$this->password')
+                where username = '$username'
                 ;
 EOT;
         }
