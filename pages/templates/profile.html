@@ -145,6 +145,9 @@
             if(data.status == true){
                 alert('Profile Updated');
                 $('#div-avatar').empty().append('<img src="img/avatars/'+$('#profile-avatars').val()+'" class="img-circle" alt="User Image" />');
+
+                $('#profile-password1').val("");
+                $('#profile-password2').val("");
             }
             else {
                 alert('Failed');
