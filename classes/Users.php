@@ -56,5 +56,31 @@ EOT;
 EOT;
         return ClassParent::get($sql);
     }
+
+    public function update($username){
+        $username = pg_escape_string(trim(strip_tags($username)));
+
+        $sql = "begin;";
+        $sql .= <<<EOT
+                update users set
+                (username,firstname,lastname,avatar)
+                =
+                ('$this->username','$this->firstname','$this->lastname','$this->avatar')
+                where username = '$username'
+                ; 
+EOT;
+        
+        if($this->password != 'NULL'){
+            $sql .= <<<EOT
+                update users set
+                password = md5('$this->password')
+                ;
+EOT;
+        }
+
+        $sql .= 'commit;';
+
+        return ClassParent::update($sql);
+    }
 }
 ?>

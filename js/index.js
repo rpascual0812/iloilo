@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$('#menu-dashboard').parent().attr('class','active');
-	$('.right-side').load('./pages/templates/dashboard.html', { date : Date() });
+	$('.right-side').load('./pages/templates/profile.html', { date : Date() });
 
 	$('#menu-dashboard').on('click',function(){
 		$("[class^='active']").each(function(i){
@@ -27,5 +27,13 @@ $(document).ready(function(){
 
 		$(this).parent().attr('class','active');
 		$('.right-side').load('./pages/templates/reports.html', { date : Date() });
+	});
+
+	$('#edit-profile').on('click',function(){
+		$("[class^='active']").each(function(i){
+            $(this).removeAttr('class');
+        });
+        
+		$('.right-side').load('./pages/templates/profile.html', { date : Date() });
 	});
 });
