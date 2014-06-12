@@ -4,13 +4,13 @@
 
         //$(this).addClass('shoutout-position');
 
-        var newTop =   $(window).height() - 50;
-        var newLeft = ($(window).width()  - $(this).width()) / 2;
-        $(this).css({
-            'position': 'absolute',
-            'left': newLeft - 450,
-            'top': newTop
-        });
+        // var newTop =   $(window).height() - 50;
+        // var newLeft = ($(window).width()  - $(this).width()) / 2;
+        // $(this).css({
+        //     'position': 'absolute',
+        //     'left': newLeft - 450,
+        //     'top': newTop
+        // });
         
         // var settings = $.extend({
         //     type: "",

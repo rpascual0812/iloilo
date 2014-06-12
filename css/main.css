@@ -2,12 +2,8 @@
 	width: 400px;
 	position: absolute;
 	z-index: 9999999999;
-	
-	display: none;
-	text-align: center;
-}
-
-#shoutout-position {
 	bottom: 5px;
 	left: 15px;
+	display: none;
+	text-align: center;
 }
