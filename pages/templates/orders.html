@@ -71,6 +71,8 @@
                     </div>
 		        </div><!-- /.box-body -->
 		    </div>
+
+
 		</section>
     </div><!-- /.row (main row) -->
 
@@ -183,13 +185,16 @@
 
             $.post('./functions/orders/submit.php', { fields : fields }, function(data){
                 if(data.status == true){
-                    alert('Appointment submitted');
+                    shout('success','Event Added');
                     clear_form();
                 }
                 else {
-                    alert('Failed');
+                    shout('error','Something went wrong. Please try again.');
                 }
             });
+        }
+        else {
+            shout('error','One or more fields are incomplete.');
         }
     }
 </script>

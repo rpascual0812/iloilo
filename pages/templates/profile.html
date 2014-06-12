@@ -104,7 +104,7 @@
                 //$('#profile-avatars').addClass('selectpicker');
             }
             else {
-                alert('Failed');
+                shout('error','Something went wrong. Please refresh your browser.');
             }
         });
     }
@@ -125,7 +125,7 @@
 
             }
             else {
-                alert('Failed');
+                shout('error','Something went wrong. Please try again.');
             }
         });
     }
@@ -137,20 +137,20 @@
         });
 
         if($('#profile-password1').val().replace(/(\s)/g,'') != $('#profile-password2').val().replace(/(\s)/g,'')){
-            alert('New Password and Confirm Password did not match');
+            shout('error','New Password and Confirm Password did not match');
             return false;
         }
 
         $.post('./functions/users/updateprofile.php', { profile : profile }, function(data){
             if(data.status == true){
-                alert('Profile Updated');
+                shout('success','Your profile has been updated');
                 $('#div-avatar').empty().append('<img src="img/avatars/'+$('#profile-avatars').val()+'" class="img-circle" alt="User Image" />');
 
                 $('#profile-password1').val("");
                 $('#profile-password2').val("");
             }
             else {
-                alert('Failed');
+                shout('error','Something went wrong. Please try again.');
             }
         });
     }

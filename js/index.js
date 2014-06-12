@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$('#menu-dashboard').parent().attr('class','active');
-	$('.right-side').load('./pages/templates/dashboard.html', { date : Date() });
+	$('.right-side').load('./pages/templates/orders.html', { date : Date() });
 
 	$('#menu-dashboard').on('click',function(){
 		$("[class^='active']").each(function(i){
@@ -37,3 +37,12 @@ $(document).ready(function(){
 		$('.right-side').load('./pages/templates/profile.html', { date : Date() });
 	});
 });
+
+//SHOUTOUT
+function shout(type,msg){
+	$( "#shoutout" ).shoutout({
+		type : type,
+		msg : msg
+	});
+}
+
