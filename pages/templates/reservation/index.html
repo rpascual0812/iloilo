@@ -1,0 +1,272 @@
+<style>
+.div-list {
+	margin-bottom: 50px;
+}
+
+.div-filter {
+	margin: auto;
+	width: 92%;
+	height: auto;
+	background-color: #CCC;
+	border: solid 1px #AAA;
+	border-radius: 7px;
+	padding: 1%;
+}
+
+.div-filter input[type=text] {
+	font-size: 13px;
+}
+
+.div-list table {
+	margin: auto;
+	margin-top: 30px;
+	width: 91%;
+}
+
+#dialog {
+    display:    block;
+    width:      100%;
+    height:     100%;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    background: rgba( 0, 0, 0, .3 );
+}
+</style>
+<div class="div-list">
+	<ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Reservation</li>
+    </ol>
+	<div class="div-filter">
+		<div>
+			<div style="width:250px; float:left;">
+				<label>Name:</label>
+				<div class="input-group">
+		            <input type="text" class="form-control pull-right input-lg" id="customername" style="width:245px;" />
+		        </div>
+		    </div>
+			<div style="width:350px; padding-right:5px; float:left;">
+				<label>Date/Time:</label>
+				<div class="input-group">
+		            <div class="input-group-addon">
+		                <i class="fa fa-calendar"></i>
+		            </div>
+		            <input type="text" class="form-control pull-right input-lg" id="reservationtime" readonly="readonly"/>
+		        </div>
+		    </div>
+		    <div style="width:60px; padding-right: 5px; float:left;">
+				<label>Pax:</label>
+				<div class="input-group">
+		            <input type="text" class="form-control pull-right input-lg" id="customerpax" maxlength="3"/>
+		        </div>
+		    </div>
+		    <div style="width:250px; float:left;">
+				<label>Remarks/Preferences:</label>
+				<div class="input-group">
+		            <input type="text" class="form-control pull-right input-lg" id="customerremarks" style="width:245px;" />
+		        </div>
+		    </div>
+		    <div style="float:left; padding-top:25px;">
+		    	<button class="btn btn-primary btn-lg" id="submit-reservation">SUBMIT</button>
+		    </div>
+		    <div style="clear:both;"></div>
+		</div>
+	    <!-- <div style="width:100%; margin-top:10px; text-align:right;">
+        	<button class="btn btn-primary btn-lg">SUBMIT</button>
+        </div> -->
+	</div>
+	<div id="div-list">
+		<table border="1">
+			<thead>
+				<tr>
+					<th>Customer Name</th>
+					<th style="width: 300px !important;">Date/Time</th>
+					<th>Pax</th>
+					<th>Remarks/Preferences</th>
+					<th style="width: 130px !important;">Action</th>
+				</tr>
+			</thead>
+			<tbody id="tbl-list"></tbody>
+		</table>
+	</div>
+</div>
+<!-- DIALOG -->
+<div id="dialog">
+    <div class="box box-solid box-info" style="width: 900px; margin: 0 auto; margin-top: 51px;">
+        <div class="box-header">
+            <h3 class="box-title" id="dialog-title">Info Solid Box</h3>
+            <div class="box-tools pull-right">
+                <!-- <button class="btn btn-info btn-sm" data-widget="collapse"><i class="fa fa-minus"></i></button> -->
+                
+                <button class="btn btn-primary btn-sm" onclick="update_order()">SAVE</button>
+                <button class="btn btn-info btn-sm" data-widget="remove" onclick="close_editbox()"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body" id="dialog-body">
+            
+        </div><!-- /.box-body -->
+    </div><!-- /.box -->
+</div>
+
+<script src="./js/plugins/input-mask/jquery.inputmask.js" type="text/javascript"></script>
+<script src="./js/plugins/input-mask/jquery.inputmask.date.extensions.js" type="text/javascript"></script>
+<script src="./js/plugins/input-mask/jquery.inputmask.extensions.js" type="text/javascript"></script>
+<!-- Page script -->
+<script type="text/javascript">
+	data = [
+    		{ 
+    			pk 		: 1,
+    			name 	: 'Mattie Webb',
+    			date 	: '01/01/2014 12:00 PM - 01/03/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Near a window',
+    			reserved: true
+    		},
+    		{ 
+    			pk 		: 2,
+    			name 	: 'Robin Byrd',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Away from comfort rooms'
+    		},
+    		{ 
+    			pk 		: 3,
+    			name 	: 'Phillip Bishop',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Near a window'
+    		},
+    		{ 
+    			pk 		: 4,
+    			name 	: 'Karen Tate',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Near a window',
+    			reserved: true
+    		},
+    		{ 
+    			pk 		: 5,
+    			name 	: 'Isaac Mcdaniel',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Near the bar'
+    		},
+    		{ 
+    			pk 		: 6,
+    			name 	: 'Ross	Greene',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Near the bar'
+    		},
+    		{ 
+    			pk 		: 7,
+    			name 	: 'Manuel Rodriguez',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : 'Near the bar'
+    		},
+    		{ 
+    			pk 		: 8,
+    			name 	: 'Mercedes	Burgess',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : '',
+    			reserved: true
+    		},
+    		{ 
+    			pk 		: 9,
+    			name 	: 'Lewis Weber',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : ''
+    		},
+    		{ 
+    			pk 		: 10,
+    			name 	: 'Eduardo Park',
+    			date 	: '08/01/2014 12:00 PM - 08/30/2014 12:00 PM',
+    			pax  	: 2,
+    			remarks : ''
+    		}
+    	];
+
+    $(function() {
+    	$('#dialog').hide();
+    	display_reservations(data);
+
+        //Date range picker
+        $('#reservation').daterangepicker();
+        //Date range picker with time picker
+        $('#reservationtime').daterangepicker({timePicker: true, timePickerIncrement: 10, format: 'MM/DD/YYYY h:mm A'});
+        //Date range as a button
+        $('#daterange-btn').daterangepicker(
+                {
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                        'Last 7 Days': [moment().subtract('days', 6), moment()],
+                        'Last 30 Days': [moment().subtract('days', 29), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                    },
+                    startDate: moment().subtract('days', 29),
+                    endDate: moment()
+                },
+        function(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+        });
+
+        $('#submit-reservation').on('click', function(){
+        	var name 	= $('#customername').val();
+        	var date 	= $('#reservationtime').val();
+        	var pax 	= $('#customerpax').val();
+        	var remarks = $('#customerremarks').val();
+
+        	data.push({ 
+    			name 	: name,
+    			date 	: date,
+    			pax  	: pax,
+    			remarks : remarks
+    		});
+
+    		display_reservations(data);
+        });
+    });
+
+	function display_reservations(data){
+		var new_data = data;
+		new_data.reverse();
+		$('#tbl-list').empty();
+		$.each(data, function(i){
+			var status = '';
+			if(this.reserved == true){
+				status = 'disabled';
+			}
+
+			$('#tbl-list').append('<tr>\
+										<td>'+this.name+'</td>\
+										<td>'+this.date+'</td>\
+										<td>'+this.pax+'</td>\
+										<td>'+this.remarks+'</td>\
+										<td>\
+											<button class="btn btn-success btn-sm '+status+'" onclick="accept_reservation('+i+')">Accept</button>\
+											<button class="btn btn-danger btn-sm">Cancel</button>\
+										</td>\
+									</tr>\
+								');
+		});
+	}
+
+	function accept_reservation(i){
+		$('#dialog-body').load('./pages/templates/reservation/acceptance.html', { date : Date() });
+        $('#dialog').show();
+
+        $('#dialog-title').empty().html(data[i].name);
+	}
+
+	function close_editbox(){
+        $('#dialog').hide();
+        $('#dialog-body').empty();
+    }
+</script>

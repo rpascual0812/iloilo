@@ -2,6 +2,15 @@ $(document).ready(function(){
 	$('#menu-dashboard').parent().attr('class','active');
 	$('.right-side').load('./pages/templates/dashboard.html', { date : Date() });
 
+	$('#menu-reservation').on('click',function(){
+		$("[class^='active']").each(function(i){
+            $(this).removeAttr('class');
+        });
+		
+		$(this).parent().attr('class','active');
+		$('.right-side').load('./pages/templates/reservation/index.html', { date : Date() });
+	});
+
 	$('#menu-dashboard').on('click',function(){
 		$("[class^='active']").each(function(i){
             $(this).removeAttr('class');
